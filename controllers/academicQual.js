@@ -2,51 +2,65 @@
 const AcademicQual = require('../models/academicQual');
 
 // newAcademic function for post-academic-route
-const newAcademic = (req, res, next) => {
+/*const newAcademic = (req, res, next) => {
     res.json({message: "POST new AcademicQual"}); // dummy function for now
-};
-
-//GET '/academicqualAPI'
-const getAllAcademic = (req, res, next) => {
-    res.json({message: "GET all AcademicQual"});
-};
-
-//DELETE '/academicqualAPI/:name'
-const deleteOneAcademic = (req, res, next) => {
-    res.json({message: "DELETE 1 AcademicQual"});
-};
-
-//POST tea
-/*const newAcademic = (req, res) => {
-    //check if the academic name already exists in database
-    AcademicQual.find({ name: req.body.name }, (err, data) => {
-
-        //if academic not in database, add it
-        if (!data) {
-            //create a new academic object using the Academic model and req.body
-            const newAcademic = new Academic({
-                name:req.body.name,
-                image: req.body.image, // placeholder for now
-                description: req.body.description,
-                keywords: req.body.keywords,
-                origin: req.body.origin,
-                brew_time: req.body.brew_time,
-                temperature: req.body.temperature,
-            })
-
-            // save this object to database
-            newAcademic.save((err, data)=>{
-                if(err) return res.json({Error: err});
-                return res.json(data);
-            })
-        //if there's an error or the academic is in database, return a message         
-        }else{
-            if(err) return res.json(`Something went wrong, please try again. ${err}`);
-            return res.json({message:"Academic Qualification already exists"});
-        }
-    })    
 };*/
 
+//GET '/academicqualAPI'
+/*const getAllAcademic = (req, res, next) => {
+    res.json({message: "GET all AcademicQual"});
+};*/
 
+//DELETE '/academicqualAPI/:name'
+/*const deleteOneAcademic = (req, res, next) => {
+    res.json({message: "DELETE 1 AcademicQual"});
+};*/
+
+//POST create Academic
+const newAcademic = async(req, res, next) => {
+    AcademicQual.create(req.body)
+      .then(academicqualAPI => res.json({ msg: 'New academic added successfully!' }))
+      .catch(err => res.status(400).json({ error: 'Unable to add this qualification.' }));
+  };
+
+  //GET all Academics
+  const getAllAcademic = async(req, res, next) => {
+    AcademicQual.find()
+      .then(academicqualAPI => res.json(academicqualAPI))
+      .catch(err => res.status(404).json({ noacademicfound: 'No qualifications found.' }));
+  };
+
+  //DELETE Academic/id
+  const deleteOneAcademic = async(req, res, next) => {
+    AcademicQual.findByIdAndDelete(req.params.id)
+      .then(academicqualAPI => res.json({ msg: 'Academic qualification deleted successfully.' }))
+      .catch(err => res.status(404).json({ error: 'No such qualification.' }));
+  };
+  
+  
 //export controller functions
 module.exports = {newAcademic, getAllAcademic, deleteOneAcademic};
+
+
+
+//POST tea
+/*const newAcademic = async(req, res, next) => {
+    try {
+        if (req.body.academicqualAPI && req.body.academicqualAPI !== ''){
+            const createAcademic = new AcademicQual(req.body);
+            await createAcademic.save();
+            return res.send("Academic Created");
+        } else{
+            return res.status(400).send("Bad Request");
+        }
+    }   catch (error) {
+        return res.status(500).send("Internal Server Error");
+    }
+};*/
+
+/*user: req.body.user,
+                establishment: req.body.establishment, // placeholder for now
+                courseTitle: req.body.courseTitle,
+                academicStart: req.body.academicStart,
+                academicEnd: req.body.academicEnd,
+                idAcademic: req.body.idAcademic,*/

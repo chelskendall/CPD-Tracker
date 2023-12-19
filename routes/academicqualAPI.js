@@ -13,5 +13,6 @@ router.post('/academicqualAPI', academicController.newAcademic); //create new ac
 router.get('/academicqualAPI', academicController.getAllAcademic); //display all academics
 router.delete('/academicqualAPI/:name', academicController.deleteOneAcademic); //delete one academic
 
+
 // 4. Export the route to use in our server.js
 module.exports = router;

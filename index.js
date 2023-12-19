@@ -2,6 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const routes = require('./routes/academicqualAPI'); // import the routes
 
+const cors = require("cors");
+const bodyParser = require("body-parser");
+
 const { MongoClient } = require("mongodb");
 const uri = "mongodb+srv://chelsk:tebendiga@cpddata.ktoj6gu.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri);
@@ -32,8 +35,15 @@ const connectMongoDB = async()=>{
     }
 }
 
+// use the cors middleware with the origin and credentials options
+app.use(cors({ origin: true, credentials: true }));
+
+// use the body-parser middleware to parse JSON and URL-encoded data
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 //app.use(bodyParser.json()); // allow application to use json data
-app.use(express.json()); // allow application to use json data
+//app.use(express.json()); // allow application to use json data
 
 app.use('/', routes); //to use the routes
 
@@ -42,6 +52,8 @@ app.use('/', routes); //to use the routes
     console.log("Connected to backend.");
 });*/
 
+// Connect Database
+connectMongoDB();
 const listener = app.listen(process.env.PORT || 3000, () => {
     console.log('App is listening on port ' + listener.address().port)
 })
