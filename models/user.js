@@ -13,12 +13,12 @@ const UserSchema = new Schema({
         type: String,
         required: [true, 'Password is required.'],
         minlength: 3
-    },
-    passwordConfirmation: {
+    }
+    /*passwordConfirmation: {
         type: String,
         required: [false],
         minlength: 3
-    },
+    },*/
     /*securityQuestion: {
         type: String,
         required: [true, 'Security question is required.']
@@ -26,7 +26,7 @@ const UserSchema = new Schema({
     securityQuestionAnswer: {
         type: String,
         required: [true, 'Security question answer is required.']
-    }*/
+    }
     isAdmin: {
         type: Boolean,
         default: false
@@ -35,7 +35,8 @@ const UserSchema = new Schema({
     },
     {
     timestamps: true
-    }
+    }*/
+}
 );
 
 const User = mongoose.model('User', UserSchema); // passing the name of the collecton in database

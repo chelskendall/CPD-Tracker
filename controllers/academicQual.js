@@ -1,4 +1,4 @@
-//import tea model
+//import Academic model
 const AcademicQual = require('../models/academicQual');
 
 // newAcademic function for post-academic-route
@@ -15,6 +15,8 @@ const AcademicQual = require('../models/academicQual');
 /*const deleteOneAcademic = (req, res, next) => {
     res.json({message: "DELETE 1 AcademicQual"});
 };*/
+
+//used logrocket.com
 
 //POST create Academic
 const newAcademic = async(req, res, next) => {
@@ -36,10 +38,18 @@ const newAcademic = async(req, res, next) => {
       .then(academicqualAPI => res.json({ msg: 'Academic qualification deleted successfully.' }))
       .catch(err => res.status(404).json({ error: 'No such qualification.' }));
   };
-  
+
+  //PUT update Academic/id
+  const updateOneAcademic = async(req, res, next) => {
+    AcademicQual.findByIdAndUpdate(req.params.id, req.body)
+      .then(academicqualAPI => res.json({ msg: 'Updated successfully.' }))
+      .catch(err =>
+        res.status(400).json({ error: 'Unable to update the Database.' })
+      );
+  };
   
 //export controller functions
-module.exports = {newAcademic, getAllAcademic, deleteOneAcademic};
+module.exports = {newAcademic, getAllAcademic, deleteOneAcademic, updateOneAcademic};
 
 
 

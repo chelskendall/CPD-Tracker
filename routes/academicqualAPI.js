@@ -11,8 +11,8 @@ const academicController = require('../controllers/academicQual');
 // 3. Create our first route with the controller function as the callback to handle the request.
 router.post('/academicqualAPI', academicController.newAcademic); //create new academic
 router.get('/academicqualAPI', academicController.getAllAcademic); //display all academics
-router.delete('/academicqualAPI/:name', academicController.deleteOneAcademic); //delete one academic
-
+router.delete('/academicqualAPI/:id', academicController.deleteOneAcademic); //delete one academic
+router.put('/academicqualAPI/:id', academicController.updateOneAcademic); //update an academic
 
 // 4. Export the route to use in our server.js
 module.exports = router;
