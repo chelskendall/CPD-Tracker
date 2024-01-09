@@ -70,7 +70,6 @@ const listener = app.listen(process.env.PORT || 3000, () => {
 //const User = require("./models/user");
 //const userAuth = require('./userAuth');
 
-
 app.use('/', require('./routes/userAPI'));
 app.use('/', require('./routes/academicqualAPI'));
 app.use('/', require('./routes/employhistoryAPI'));

@@ -18,15 +18,15 @@ const UserSchema = new Schema({
         type: String,
         required: [false],
         minlength: 3
-    },
-    securityQuestion: {
+    }
+    /*securityQuestion: {
         type: String,
         required: [true, 'Security question is required.']
     },
     securityQuestionAnswer: {
         type: String,
         required: [true, 'Security question answer is required.']
-    }
+    }*/
 }
 );
 

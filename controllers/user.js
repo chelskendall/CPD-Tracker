@@ -29,9 +29,9 @@ exports.register = function(req,res){
                         expiresIn: "1h"
                     }
                     );
-                    (new User({'email': req.body.email , 'password': hash, 
-                    'securityQuestion': req.body.securityQuestion, 
-                  'securityQuestionAnswer':req.body.securityQuestionAnswer}))
+                    (new User({'email': req.body.email , 'password': hash 
+                    /*'securityQuestion': req.body.securityQuestion, 
+                  'securityQuestionAnswer':req.body.securityQuestionAnswer*/}))
                     .save().then(function(){
                         return res.status(200).json({
                             message: 'Registration Successful',
@@ -43,10 +43,9 @@ exports.register = function(req,res){
 )
 };
 
-  /*const login = async(request, response) => {
+exports.login = function(request, response){
     // check if email exists
     User.findOne({ email: request.body.email })
-  
       // if email exists
       .then((userProfile) => {
         // compare the password entered and the hashed password found
@@ -63,7 +62,6 @@ exports.register = function(req,res){
                 error,
               });
             }
-  
             //   create JWT token
             const token = jwt.sign(
               {
@@ -73,7 +71,6 @@ exports.register = function(req,res){
               "RANDOM-TOKEN",
               { expiresIn: "24h" }
             );
-  
             //   return success response
             response.status(200).send({
               message: "Login Successful",
@@ -98,8 +95,42 @@ exports.register = function(req,res){
       });
   };
 
-//export controller functions
-module.exports = {login};*/
+exports.updatePW = function(req,res){
+    User.find({email: req.body.email})
+    .then(user => {
+        if (user.length < 1){
+            return res.status(401).json({
+                message: 'Invalid Username'
+            });
+        }else if(req.body.password === req.body.passwordConfirmation)
+                bcrypt.hash(req.body.password,10,(err,hash) => {
+                    if (err) {
+                        return res.status(500).json({
+                            error: err
+                        });
+                    } else {
+                        const token = jwt.sign({
+                            email: req.body.email
+                        }, 
+                        'my_secrete_key',
+                        {
+                            expiresIn: "1h"
+                        }
+                        );
+                        const updatedUser = { password: hash };
+                        User.findOneAndUpdate({email: req.body.email},updatedUser).then(function(){
+                            res.status(200).json({
+                                token: token
+                            });
+                    })
+                }})
+            else{
+            return res.status(401).json({
+                message: 'Password and Password Confirmation does not match'
+            });
+        }
+        })
+};
 
 
 
