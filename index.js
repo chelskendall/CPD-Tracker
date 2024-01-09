@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const routes = require('./routes/academicqualAPI','./routes/employhistoryAPI'); // import the routes
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -19,6 +18,10 @@ app.use((req, res, next) => {
     console.log(req.path, req.method)
     next()
 })
+
+// Used to log requests
+/*const morgan = require('morgan');
+app.use(morgan('dev'));*/
 
 //Connection to database
 /*mongoose.Promise = global.Promise;
@@ -57,7 +60,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 //app.use(express.json()); // allow application to use json data
 
-app.use('/', routes); //to use the routes
 
 // Connect Database & Backend
 connectMongoDB();
@@ -65,11 +67,22 @@ const listener = app.listen(process.env.PORT || 3000, () => {
     console.log('App is listening on port ' + listener.address().port)
 })
 
-const User = require("./models/user");
-const userAuth = require('./userAuth');
+//const User = require("./models/user");
+//const userAuth = require('./userAuth');
+
+
+app.use('/', require('./routes/userAPI'));
+app.use('/', require('./routes/academicqualAPI'));
+app.use('/', require('./routes/employhistoryAPI'));
+
+
+//Testing
+app.use((req,res,next) => {
+    res.status(404).send("Sorry can't find that!")
+})
 
 // register endpoint
-app.post("/register", (request, response) => {
+/*app.post("/register", (request, response) => {
     // hash the password
     bcrypt
       .hash(request.body.password, 10)
@@ -103,10 +116,10 @@ app.post("/register", (request, response) => {
           e,
         });
       });
-  });
+  });*/
 
 // login endpoint
-app.post("/login", (request, response) => {
+/*app.post("/login", (request, response) => {
     // check if email exists
     User.findOne({ email: request.body.email })
   
@@ -159,14 +172,14 @@ app.post("/login", (request, response) => {
           e,
         });
       });
-  });
+  });*/
   
   // free endpoint
-app.get("/free-endpoint", (request, response) => {
+/*app.get("/free-endpoint", (request, response) => {
     response.json({ message: "You are allowed to access me." });
   });
   
   // authentication endpoint
   app.get("/auth-endpoint", userAuth, (request, response) => {
     response.send({ message: "You are authorized to access me." });
-  });
+  });*/

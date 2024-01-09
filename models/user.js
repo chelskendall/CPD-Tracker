@@ -13,13 +13,13 @@ const UserSchema = new Schema({
         type: String,
         required: [true, 'Password is required.'],
         minlength: 3
-    }
-    /*passwordConfirmation: {
+    },
+    passwordConfirmation: {
         type: String,
         required: [false],
         minlength: 3
-    },*/
-    /*securityQuestion: {
+    },
+    securityQuestion: {
         type: String,
         required: [true, 'Security question is required.']
     },
@@ -27,15 +27,6 @@ const UserSchema = new Schema({
         type: String,
         required: [true, 'Security question answer is required.']
     }
-    isAdmin: {
-        type: Boolean,
-        default: false
-    }
-    
-    },
-    {
-    timestamps: true
-    }*/
 }
 );
 
