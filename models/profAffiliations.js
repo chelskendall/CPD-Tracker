@@ -6,7 +6,7 @@ const ProfAffiliationsSchema = new Schema({
     user: {
         type: String,
         required: [true],
-        ref: "userEmail"
+        ref: "User"
     },
     typeAffiliation: {
         type: String, //dropdown selection
@@ -28,9 +28,9 @@ const ProfAffiliationsSchema = new Schema({
         type: Date,
         required: [true]
     },
-
-    //file input field
-
+    files: {
+        type: String
+    },
     idAffiliate: {
         type: String,
         required: [true]

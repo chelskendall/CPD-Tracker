@@ -1,76 +1,142 @@
 //import Academic model
 const AcademicQual = require('../models/academicQual');
+const uuid = require("uuid");
+const path = require("path");
+const fs = require("fs");
 
-// newAcademic function for post-academic-route
-/*const newAcademic = (req, res, next) => {
-    res.json({message: "POST new AcademicQual"}); // dummy function for now
-};*/
-
-//GET '/academicqualAPI'
-/*const getAllAcademic = (req, res, next) => {
-    res.json({message: "GET all AcademicQual"});
-};*/
-
-//DELETE '/academicqualAPI/:name'
-/*const deleteOneAcademic = (req, res, next) => {
-    res.json({message: "DELETE 1 AcademicQual"});
-};*/
-
-//used logrocket.com
+const uploadFile = require('../middleware/uploadFile');
+const baseUrl = "http://localhost:3000/academicfiles/";
+  
 
 //POST create Academic
-const newAcademic = async(req, res, next) => {
-    AcademicQual.create(req.body)
-      .then(academicqualAPI => res.json({ msg: 'New academic added successfully!' }))
-      .catch(err => res.status(400).json({ error: 'Unable to add this qualification.' }));
+exports.newAcademic = (req, res) => {  
+    // Create an Academic
+    const academic = new AcademicQual({
+      user: req.params.email,
+      establishment: req.body.establishment,
+      courseTitle: req.body.courseTitle,
+      academicStart: req.body.academicStart,
+      academicEnd: req.body.academicEnd,
+      //files: req.body.files,
+      idAcademic: uuid.v4()
+    });
+    if (req.file){
+      let path = ''
+      req.files.forEach(function(files,index,arr){
+        path = path + files.path + ','
+      })
+      path = path.substring(0, path.lastIndexOf(","))
+      academic.files = path
+    }
+    // Save Academic in the database
+    academic
+      .save(academic)
+      .then(data => {
+        res.send(data);
+      })
+      .catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while entering Academic Qualifications."
+        });
+      });
   };
 
-  //GET all Academics
-  const getAllAcademic = async(req, res, next) => {
+//GET all Files  
+exports.getAcademicFiles = (req, res) => {
+  const directoryPath = "../CPD-Tracker/uploads";
+  fs.readdir(directoryPath, function (err, files) {
+    if (err) {
+      return res.status(500).send({
+        message: "Unable to scan files!",
+      });
+    }
+    else{
+    let fileList = [];
+
+    files.forEach((file) => {
+      fileList.push({
+        name: file,
+        url: baseUrl + file,
+      });
+    });
+    return res.status(200).send(fileList);
+    };
+  });
+};
+
+//GET all Academics  
+exports.getAllAcademic = (req, res) => {
     AcademicQual.find()
-      .then(academicqualAPI => res.json(academicqualAPI))
-      .catch(err => res.status(404).json({ noacademicfound: 'No qualifications found.' }));
+      .then(data => { res.send(data); })
+      .catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving qualifications."
+        });
+      });
   };
 
-  //DELETE Academic/id
-  const deleteOneAcademic = async(req, res, next) => {
-    AcademicQual.findByIdAndDelete(req.params.id)
-      .then(academicqualAPI => res.json({ msg: 'Academic qualification deleted successfully.' }))
-      .catch(err => res.status(404).json({ error: 'No such qualification.' }));
+//DELETE File/id
+exports.deleteEndorseFile = (req, res) => {
+  const fileName = req.params.files;
+  const directoryPath = "../CPD-Tracker/uploads/";
+
+  try {
+    fs.unlinkSync(directoryPath + fileName);
+
+    res.status(200).send({
+      message: "File is deleted.",
+    });
+  } catch (err) {
+    res.status(500).send({
+      message: "Could not delete the file. " + err,
+    });
+  }
+};
+
+//DELETE Academic/id
+exports.deleteOneAcademic = (req, res) => {
+    const id = req.params.id;
+    AcademicQual.findByIdAndDelete(id)
+      .then(data => {
+        if (!data) {
+          res.status(404).send({
+            message: 'Cannot find & delete qualification.'
+          });
+        } else {
+          res.send({
+            message: "Qualification was deleted successfully!"
+          });
+        }
+      })
+      .catch(err => {
+        res.status(500).send({
+          message: "Could not delete qualification."
+        });
+      });
   };
 
-  //PUT update Academic/id
-  const updateOneAcademic = async(req, res, next) => {
-    AcademicQual.findByIdAndUpdate(req.params.id, req.body)
-      .then(academicqualAPI => res.json({ msg: 'Updated successfully.' }))
-      .catch(err =>
-        res.status(400).json({ error: 'Unable to update the Database.' })
-      );
+//PUT update Academic/id  
+exports.updateOneAcademic = (req, res) => {
+    if (!req.body) {
+      return res.status(400).send({
+        message: "Data to update can not be empty!"
+      });
+    }
+    const id = req.params.id;
+    AcademicQual.findByIdAndUpdate(id, req.body)
+      .then(data => {
+        if (!data) {
+          res.status(404).send({
+            message: 'Cannot find & update qualification.'
+          });
+        } else res.send({ message: "Qualification was updated successfully." });
+      })
+      .catch(err => {
+        res.status(500).send({
+          message: "Error updating qualification."
+        });
+      });
   };
   
-//export controller functions
-module.exports = {newAcademic, getAllAcademic, deleteOneAcademic, updateOneAcademic};
-
-
-
-//POST tea
-/*const newAcademic = async(req, res, next) => {
-    try {
-        if (req.body.academicqualAPI && req.body.academicqualAPI !== ''){
-            const createAcademic = new AcademicQual(req.body);
-            await createAcademic.save();
-            return res.send("Academic Created");
-        } else{
-            return res.status(400).send("Bad Request");
-        }
-    }   catch (error) {
-        return res.status(500).send("Internal Server Error");
-    }
-};*/
-
-/*user: req.body.user,
-                establishment: req.body.establishment, // placeholder for now
-                courseTitle: req.body.courseTitle,
-                academicStart: req.body.academicStart,
-                academicEnd: req.body.academicEnd,
-                idAcademic: req.body.idAcademic,*/

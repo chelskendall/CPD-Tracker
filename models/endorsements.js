@@ -6,7 +6,7 @@ const EndorsementsSchema = new Schema({
     user: {
         type: String,
         required: [true],
-        ref: "userEmail"
+        ref: "User"
     },
     refereeName: {
         type: String,
@@ -24,9 +24,9 @@ const EndorsementsSchema = new Schema({
         type: Date,
         required: [true]
     },
-
-    //file input field
-
+    files: {
+      type: String
+    },
     idEndorse: {
         type: String,
         required: [true]

@@ -11,6 +11,7 @@ router.put('/users',userController.updatePW); // Update a password for a user
 
 module.exports = router;
 
+//Admin Roles
 // Display list of users from database
 //router.get('/users/:username',users.allUsers );
 

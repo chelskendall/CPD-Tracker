@@ -1,18 +1,19 @@
 const express = require('express'); //import express
+const router  = express.Router(); //Create an express router object to set up our routes
 
-// 1. Create an express router object to set up our routes
-const router  = express.Router(); 
-
-
-// 2. Import our employment history controller from our controllers/employHistory.js file we created earlier
-const employController = require('../controllers/employHistory'); 
+const userAuth = require('../middleware/userAuth');
+const uploadFile = require('../middleware/uploadFile');
+const employController = require('../controllers/employHistory');   //Import our controller from our controller file we created earlier
 
 
-// 3. Create our first route with the controller function as the callback to handle the request.
-router.post('/employhistoryAPI', employController.newEmployment); //create new employment
-router.get('/employhistoryAPI', employController.getAllEmployment); //display all employment
-router.delete('/employhistoryAPI/:id', employController.deleteOneEmployment); //delete one employment
-router.put('/employhistoryAPI/:id', employController.updateOneEmployment); //update an employment
+//Create routes with the controller function as the callback to handle the request.
+router.post('/user/:email/newemploy', userAuth, uploadFile, employController.newEmployment); //new employment
+router.get('/user/:email/allemploy', userAuth, employController.getAllEmploy); //display all employment
+router.get('/user/:email/employfiles', userAuth, employController.getEmployFiles); //display all files
+router.delete('/user/:email/deleteemploy/:id', userAuth, employController.deleteOneEmploy); //delete one employment
+router.delete('/user/:email/deleteemployf/:files', userAuth, employController.deleteEmployFile); //delete one file
+router.put('/user/:email/updateemploy/:id', userAuth, employController.updateOneEmploy); //update an employment
 
-// 4. Export the route to use in our server.js
+
+// Export the route to use in our index.js
 module.exports = router;

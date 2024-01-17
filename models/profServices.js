@@ -6,7 +6,7 @@ const ProfServicesSchema = new Schema({
     user: {
         type: String,
         required: [true],
-        ref: "userEmail"
+        ref: "User"
     },
     typeServices: {
         type: String, //dropdown selection
@@ -28,9 +28,9 @@ const ProfServicesSchema = new Schema({
         type: String,
         required: [true]
     },
-
-    //file input field
-
+    files: {
+        type: String
+    },
     idServices: {
         type: String,
         required: [true]

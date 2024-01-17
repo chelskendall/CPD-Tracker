@@ -6,7 +6,7 @@ const CPDTrainingSchema = new Schema({
     user: {
         type: String,
         required: [true],
-        ref: "userEmail"
+        ref: "User"
     },
     typeCPD: {
         type: String, //dropdown selection
@@ -36,9 +36,9 @@ const CPDTrainingSchema = new Schema({
         type: String,
         required: [true]
     },
-
-    //file input field
-
+    files: {
+        type: String
+    },
     idCPD: {
         type: String,
         required: [true]

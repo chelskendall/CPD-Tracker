@@ -5,6 +5,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const multer = require("multer");
+const path = require ('path');
 
 const { MongoClient } = require("mongodb");
 const uri = "mongodb+srv://chelsk:tebendiga@cpddata.ktoj6gu.mongodb.net/?retryWrites=true&w=majority";
@@ -22,12 +24,6 @@ app.use((req, res, next) => {
 // Used to log requests
 /*const morgan = require('morgan');
 app.use(morgan('dev'));*/
-
-//Connection to database
-/*mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/CPDdata') 
-.then(() => console.log("Database is connected"))
-.catch((error) => console.log(error));*/
 
 const connectMongoDB = async()=>{
     try {
@@ -67,12 +63,15 @@ const listener = app.listen(process.env.PORT || 3000, () => {
     console.log('App is listening on port ' + listener.address().port)
 })
 
-//const User = require("./models/user");
-//const userAuth = require('./userAuth');
-
+//Initialize Routes
 app.use('/', require('./routes/userAPI'));
+app.use('/', require('./routes/personalAPI'));
 app.use('/', require('./routes/academicqualAPI'));
 app.use('/', require('./routes/employhistoryAPI'));
+app.use('/', require('./routes/affiliationAPI'));
+app.use('/', require('./routes/serviceAPI'));
+app.use('/', require('./routes/cpdAPI'));
+app.use('/', require('./routes/endorseAPI'));
 
 
 //Testing

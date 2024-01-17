@@ -6,7 +6,7 @@ const AcademicQualSchema = new Schema({
     user: {
         type: String,
         required: [true],
-        //ref: "userEmail"
+        ref: "User"
     },
     establishment: {
         type: String,
@@ -23,6 +23,9 @@ const AcademicQualSchema = new Schema({
     academicEnd: {
         type: Date,
         required: [true]
+    },
+    files: {
+        type: String
     },
     idAcademic: {
         type: String,

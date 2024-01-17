@@ -8,11 +8,11 @@ exports.register = function(req,res){
     .then(user => {
         if (user.length >= 1) {
             return res.status(409).json({
-                message: 'Username Taken'
+                message: 'Email taken.'
             }); //Conflict occurs
         }else if (req.body.password != req.body.passwordConfirmation) {
             return res.status(409).json({
-                message: 'Password and Password Confirmation does NOT Match'
+                message: 'Password and Password Confirmation does not match.'
             }); //Conflict occurs
         } else{  
             bcrypt.hash(req.body.password,10,(err,hash) => {
@@ -24,7 +24,7 @@ exports.register = function(req,res){
                     const token = jwt.sign({
                         email: req.body.email
                     }, 
-                    'my_secrete_key',
+                    'RANDOM-TOKEN',
                     {
                         expiresIn: "1h"
                     }
@@ -34,7 +34,7 @@ exports.register = function(req,res){
                   'securityQuestionAnswer':req.body.securityQuestionAnswer*/}))
                     .save().then(function(){
                         return res.status(200).json({
-                            message: 'Registration Successful',
+                            message: 'Registration Successful!',
                             token: token
                         });}).catch(error => {console.log(error)});
                 }
@@ -58,7 +58,7 @@ exports.login = function(request, response){
             // check if password matches
             if(!passwordCheck) {
               return response.status(400).send({
-                message: "Passwords does not match",
+                message: "Passwords do not match.",
                 error,
               });
             }
@@ -73,7 +73,7 @@ exports.login = function(request, response){
             );
             //   return success response
             response.status(200).send({
-              message: "Login Successful",
+              message: "Login Successful!",
               email: userProfile.email,
               token,
             });
@@ -81,7 +81,7 @@ exports.login = function(request, response){
           // catch error if password do not match
           .catch((error) => {
             response.status(400).send({
-              message: "Passwords does not match",
+              message: "Passwords do not match.",
               error,
             });
           });
@@ -89,7 +89,7 @@ exports.login = function(request, response){
       // catch error if email does not exist
       .catch((e) => {
         response.status(404).send({
-          message: "Email not found",
+          message: "Email not found.",
           e,
         });
       });
@@ -100,7 +100,7 @@ exports.updatePW = function(req,res){
     .then(user => {
         if (user.length < 1){
             return res.status(401).json({
-                message: 'Invalid Username'
+                message: 'Invalid email.'
             });
         }else if(req.body.password === req.body.passwordConfirmation)
                 bcrypt.hash(req.body.password,10,(err,hash) => {
@@ -112,7 +112,7 @@ exports.updatePW = function(req,res){
                         const token = jwt.sign({
                             email: req.body.email
                         }, 
-                        'my_secrete_key',
+                        'RANDOM-TOKEN',
                         {
                             expiresIn: "1h"
                         }
@@ -126,12 +126,34 @@ exports.updatePW = function(req,res){
                 }})
             else{
             return res.status(401).json({
-                message: 'Password and Password Confirmation does not match'
+                message: 'Password and Password Confirmation do not match.'
             });
         }
         })
 };
 
+//Admin views all users
+exports.allUsers = function(req,res){
+    if (req.params.email === 'Administrator'){
+        res.status(200);
+        User.find({}, { email: 1, _id: 0 }).then(function(email){
+            res.status(201).json({
+                email
+            });
+        }).catch((error) => {
+            console.log(error);
+            res.status(500);
+        });
+    }
+    else {
+        res.status(401).json({
+            message: 'Administrator access only.'
+        }); 
+    }
+};
 
+//Admin deletes user
 
+//User views all data
 
+//Mentor?

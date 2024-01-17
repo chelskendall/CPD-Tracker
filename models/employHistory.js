@@ -6,7 +6,7 @@ const EmployHistorySchema = new Schema({
     user: {
         type: String,
         required: [true],
-        ref: "userEmail"
+        ref: "User"
     },
     jobTitle: {
         type: String,
@@ -27,6 +27,9 @@ const EmployHistorySchema = new Schema({
     responsibilities: {
         type: String,
         required: [true]
+    },
+    files: {
+        type: String
     },
     idEmploy: {
         type: String,

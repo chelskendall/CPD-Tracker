@@ -6,7 +6,7 @@ const PersonalDetailsSchema = new Schema({
     user: {
         type: String,
         required: [true],
-        ref: "userEmail"
+        ref: "User"
     },
     firstName: {
         type: String,

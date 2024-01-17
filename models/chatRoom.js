@@ -6,7 +6,7 @@ const ChatroomSchema = new Schema({
     user: {
         type: String,
         required: [true],
-        ref: "userEmail"
+        ref: "User"
     },
     created: {
         type: Date,
