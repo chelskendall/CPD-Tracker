@@ -78,7 +78,7 @@ exports.getAllAcademic = (req, res) => {
   };
 
 //DELETE File/id
-exports.deleteEndorseFile = (req, res) => {
+exports.deleteAcademicFile = (req, res) => {
   const fileName = req.params.files;
   const directoryPath = "../CPD-Tracker/uploads/";
 

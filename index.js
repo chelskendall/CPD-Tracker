@@ -8,6 +8,12 @@ const bodyParser = require("body-parser");
 const multer = require("multer");
 const path = require ('path');
 
+const expressHandlebars = require('express-handlebars').engine;
+
+const { downloadOrder, findAll, findOne, viewOrder } = require('./controllers/cvTemplate');
+const AcademicQual = require('./models/academicQual');
+//const Endorsements = require('./models/endorsements');
+
 const { MongoClient } = require("mongodb");
 const uri = "mongodb+srv://chelsk:tebendiga@cpddata.ktoj6gu.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri);
@@ -54,7 +60,11 @@ app.use(cors({ origin: true, credentials: true }));
 // use the body-parser middleware to parse JSON and URL-encoded data
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-//app.use(express.json()); // allow application to use json data
+app.use(express.json()); // allow application to use json data
+
+app.engine('handlebars', expressHandlebars());
+app.set('view engine', 'handlebars');   //sets Handlebars as the view engine to render pages
+app.set('views', path.resolve(__dirname, './views'));  //indicates the folder where the view engine will look up the files to render
 
 
 // Connect Database & Backend
@@ -72,12 +82,31 @@ app.use('/', require('./routes/affiliationAPI'));
 app.use('/', require('./routes/serviceAPI'));
 app.use('/', require('./routes/cpdAPI'));
 app.use('/', require('./routes/endorseAPI'));
+app.use('/orders/:id/view', viewOrder);
 
+
+/*const resume = {
+	shipping: {
+		name: 'John Doe',
+		address: '1234 Main Street',
+		city: 'San Francisco',
+		state: 'CA',
+		country: 'US',
+		postal_code: 94111,
+	}
+};*/
+
+/*const { createCV } = require('./createCV.js');
+const AcademicQual = require('./models/academicQual');
+createCV(AcademicQual, 'invoice.pdf');*/
 
 //Testing
 app.use((req,res,next) => {
     res.status(404).send("Sorry can't find that!")
 })
+
+
+
 
 // register endpoint
 /*app.post("/register", (request, response) => {

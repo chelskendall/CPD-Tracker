@@ -44,7 +44,7 @@ exports.newEmployment = (req, res) => {
 };
 
 //GET all Files  
-exports.getEmploymentFiles = (req, res) => {
+exports.getEmployFiles = (req, res) => {
   const directoryPath = "../CPD-Tracker/uploads";
   fs.readdir(directoryPath, function (err, files) {
     if (err) {
@@ -67,7 +67,7 @@ exports.getEmploymentFiles = (req, res) => {
 };
 
 //GET all Employment
-exports.getAllEmployment = (req, res) => {
+exports.getAllEmploy = (req, res) => {
   EmployHistory.find()
   .then(data => { return res.send(data); })
   .catch(err => {
@@ -79,7 +79,7 @@ exports.getAllEmployment = (req, res) => {
 };
 
 //DELETE File/id
-exports.deleteEmploymentFile = (req, res) => {
+exports.deleteEmployFile = (req, res) => {
   const fileName = req.params.files;
   const directoryPath = "../CPD-Tracker/uploads/";
 
@@ -97,7 +97,7 @@ exports.deleteEmploymentFile = (req, res) => {
 };
 
 //DELETE Employment/id
-exports.deleteOneEmployment = (req, res) => {
+exports.deleteOneEmploy = (req, res) => {
   const id = req.params.id;
   EmployHistory.findByIdAndDelete(id)
     .then(data => {
@@ -119,7 +119,7 @@ exports.deleteOneEmployment = (req, res) => {
 };
 
 //PUT update Employment/id
-exports.updateOneEmployment = (req, res) => {
+exports.updateOneEmploy = (req, res) => {
   if (!req.body) {
     return res.status(400).send({
       message: "Data to update can not be empty!"
