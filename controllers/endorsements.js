@@ -77,6 +77,24 @@ exports.getAllEndorse = (req, res) => {
     });
 };
 
+//GET Endorsement/id
+exports.getEndorse = (req, res) => {
+  const id = req.params.id;
+
+  Endorsement.findById(id)
+    .then((result) => {
+      if (!result)
+        res.status(404).send({ 
+          message: "Cannot find endorse with id " + id });
+      else res.send({data: result});
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .send({ message: "Error retrieving endorse with id=" + id });
+    });
+};
+
 //DELETE File/id
 exports.deleteEndorseFile = (req, res) => {
   const fileName = req.params.files;

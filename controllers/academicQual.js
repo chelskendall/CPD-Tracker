@@ -77,6 +77,24 @@ exports.getAllAcademic = (req, res) => {
       });
   };
 
+//GET Academic/id
+exports.getAcademic = (req, res) => {
+  const id = req.params.id;
+
+  AcademicQual.findById(id)
+    .then((result) => {
+      if (!result)
+        res.status(404).send({ 
+          message: "Cannot find academics with id " + id });
+      else res.send({data: result});
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .send({ message: "Error retrieving academics with id=" + id });
+    });
+};
+
 //DELETE File/id
 exports.deleteAcademicFile = (req, res) => {
   const fileName = req.params.files;

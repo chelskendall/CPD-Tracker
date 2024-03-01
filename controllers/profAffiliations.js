@@ -78,6 +78,24 @@ exports.getAllAffiliation = (req, res) => {
     });
 };
 
+//GET Affiliation/id
+exports.getAffiliation = (req, res) => {
+  const id = req.params.id;
+
+  Affiliations.findById(id)
+    .then((result) => {
+      if (!result)
+        res.status(404).send({ 
+          message: "Cannot find affil with id " + id });
+      else res.send({data: result});
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .send({ message: "Error retrieving affil with id=" + id });
+    });
+};
+
 //DELETE File/id
 exports.deleteAffiliationFile = (req, res) => {
   const fileName = req.params.files;

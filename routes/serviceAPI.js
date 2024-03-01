@@ -9,6 +9,7 @@ const serviceController = require('../controllers/profServices');
 // Create routes with the controller function as the callback to handle the request.
 router.post('/user/:email/newservice', userAuth, uploadFile, serviceController.newService); //new service
 router.get('/user/:email/allservice', userAuth, serviceController.getAllService); //display all service
+router.get('/user/:email/service/:id', userAuth, serviceController.getService); //display one service
 router.get('/user/:email/servicefiles', userAuth, serviceController.getServiceFiles); //display all files
 router.delete('/user/:email/deleteservice/:id', userAuth, serviceController.deleteOneService); //delete one service
 router.delete('/user/:email/deleteservicef/:files', userAuth, serviceController.deleteServiceFile); //delete one file

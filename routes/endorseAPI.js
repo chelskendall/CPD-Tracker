@@ -9,6 +9,7 @@ const endorseController = require('../controllers/endorsements');
 // Create routes with the controller function as the callback to handle the request.
 router.post('/user/:email/newendorse', userAuth, uploadFile, endorseController.newEndorse); //new endorsement
 router.get('/user/:email/allendorse', userAuth, endorseController.getAllEndorse); //display all endorsement
+router.get('/user/:email/endorse/:id', userAuth, endorseController.getEndorse); //display one endorsement
 router.get('/user/:email/endorsefiles', userAuth, endorseController.getEndorseFiles); //display all files
 router.delete('/user/:email/deleteendorse/:id', userAuth, endorseController.deleteOneEndorse); //delete one endorsement
 router.delete('/user/:email/deleteendorsef/:files', userAuth, endorseController.deleteEndorseFile); //delete one file

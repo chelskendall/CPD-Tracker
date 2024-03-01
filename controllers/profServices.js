@@ -78,6 +78,24 @@ exports.getAllService = (req, res) => {
     });
 };
 
+//GET Service/id
+exports.getService = (req, res) => {
+  const id = req.params.id;
+
+  Services.findById(id)
+    .then((result) => {
+      if (!result)
+        res.status(404).send({ 
+          message: "Cannot find service with id " + id });
+      else res.send({data: result});
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .send({ message: "Error retrieving service with id=" + id });
+    });
+};
+
 //DELETE File/id
 exports.deleteServiceFile = (req, res) => {
   const fileName = req.params.files;

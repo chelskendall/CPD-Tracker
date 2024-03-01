@@ -80,6 +80,24 @@ exports.getAllCPD = (req, res) => {
     });
 };
 
+//GET CPD/id
+exports.getCPD = (req, res) => {
+  const id = req.params.id;
+
+  CPD.findById(id)
+    .then((result) => {
+      if (!result)
+        res.status(404).send({ 
+          message: "Cannot find CPD with id " + id });
+      else res.send({data: result});
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .send({ message: "Error retrieving CPD with id=" + id });
+    });
+};
+
 //DELETE File/id
 exports.deleteCPDFile = (req, res) => {
   const fileName = req.params.files;

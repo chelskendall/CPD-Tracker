@@ -78,6 +78,24 @@ exports.getAllEmploy = (req, res) => {
     });
 };
 
+//GET Employment/id
+exports.getEmploy = (req, res) => {
+  const id = req.params.id;
+
+  EmployHistory.findById(id)
+    .then((result) => {
+      if (!result)
+        res.status(404).send({ 
+          message: "Cannot find employ with id " + id });
+      else res.send({data: result});
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .send({ message: "Error retrieving employ with id=" + id });
+    });
+};
+
 //DELETE File/id
 exports.deleteEmployFile = (req, res) => {
   const fileName = req.params.files;

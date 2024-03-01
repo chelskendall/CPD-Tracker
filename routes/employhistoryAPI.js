@@ -9,6 +9,7 @@ const employController = require('../controllers/employHistory');   //Import our
 //Create routes with the controller function as the callback to handle the request.
 router.post('/user/:email/newemploy', userAuth, uploadFile, employController.newEmployment); //new employment
 router.get('/user/:email/allemploy', userAuth, employController.getAllEmploy); //display all employment
+router.get('/user/:email/employ/:id', userAuth, employController.getEmploy); //display one employment
 router.get('/user/:email/employfiles', userAuth, employController.getEmployFiles); //display all files
 router.delete('/user/:email/deleteemploy/:id', userAuth, employController.deleteOneEmploy); //delete one employment
 router.delete('/user/:email/deleteemployf/:files', userAuth, employController.deleteEmployFile); //delete one file

@@ -20,7 +20,7 @@ exports.newPersonal = (req, res) => {
       .save(personal)
       .then(data => {
         res.send(data);
-        res.json({ msg: 'New endorsement added successfully!'});
+        //res.json({ msg: 'New endorsement added successfully!'});
       })
       .catch(err => {
         res.status(500).send({
@@ -31,7 +31,7 @@ exports.newPersonal = (req, res) => {
 };
 
 //GET all Personal
-exports.getAllPersonal = (req, res) => {
+/*exports.getAllPersonal = (req, res) => {
   PersonalDetails.find()
   .then(data => { return res.send(data); })
   .catch(err => {
@@ -39,6 +39,35 @@ exports.getAllPersonal = (req, res) => {
       message:
         err.message || "Some error occurred while retrieving details."
       });
+    });
+};*/
+
+exports.getAllPersonal = (req, res) => {
+  PersonalDetails.find()
+  .then((result) => { return res.send({data: result}); })
+  .catch(err => {
+    return res.status(404).json({
+      message:
+        err.message || "Some error occurred while retrieving details."
+      });
+    });
+};
+
+//GET Personal/id
+exports.getPersonal = (req, res) => {
+  const id = req.params.id;
+
+  PersonalDetails.findById(id)
+    .then((result) => {
+      if (!result)
+        res.status(404).send({ 
+          message: "Cannot find details with id " + id });
+      else res.send({data: result});
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .send({ message: "Error retrieving details with id=" + id });
     });
 };
 
@@ -72,13 +101,13 @@ exports.updateOnePersonal = (req, res) => {
     });
   }
   const id = req.params.id;
-  PersonalDetails.findByIdAndUpdate(id, req.body)
-    .then(data => {
-      if (!data) {
+  PersonalDetails.findByIdAndUpdate(id, {$set: req.body})
+    .then((result) => {
+      if (!result) {
         res.status(404).send({
           message: 'Cannot find & update details.'
         });
-      } else res.send({ message: "Details were updated successfully." });
+      } else res.send({ data: result, message: "Details were updated successfully." });
     })
     .catch(err => {
       res.status(500).send({
