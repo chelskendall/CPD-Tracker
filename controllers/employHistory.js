@@ -20,19 +20,19 @@ exports.newEmployment = (req, res) => {
     //files: req.body.files,
     idEmploy: uuid.v4()
   });
-  if (req.file){
+  /*if (req.file){
     let path = ''
     req.files.forEach(function(files,index,arr){
       path = path + files.path + ','
     })
     path = path.substring(0, path.lastIndexOf(","))
     employment.files = path
-  }
+  }*/
   //Save Employment in the database
   employment
     .save(employment)
-    .then(data => {
-      res.send(data);
+    .then((result) => {
+      res.send({data: result});
       res.json({ msg: 'New employment added successfully!'});
     })
     .catch(err => {
@@ -69,7 +69,7 @@ exports.getEmployFiles = (req, res) => {
 //GET all Employment
 exports.getAllEmploy = (req, res) => {
   EmployHistory.find()
-  .then(data => { return res.send(data); })
+  .then((result) => { return res.send({data: result}); })
   .catch(err => {
     return res.status(404).json({
       message:
@@ -144,13 +144,13 @@ exports.updateOneEmploy = (req, res) => {
     });
   }
   const id = req.params.id;
-  EmployHistory.findByIdAndUpdate(id, req.body)
-    .then(data => {
-      if (!data) {
+  EmployHistory.findByIdAndUpdate(id, {$set: req.body})
+  .then((result) => {
+    if (!result) {
         res.status(404).send({
           message: 'Cannot find & update employment.'
         });
-      } else res.send({ message: "Employment was updated successfully." });
+      } else res.send({ data: result, message: "Employment was updated successfully." });
     })
     .catch(err => {
       res.status(500).send({

@@ -68,7 +68,7 @@ exports.getEndorseFiles = (req, res) => {
 //GET all Endorsement
 exports.getAllEndorse = (req, res) => {
   Endorsement.find()
-  .then(data => { return res.send(data); })
+  .then((result) => { return res.send({data: result}); })
   .catch(err => {
     return res.status(404).json({
       message:
@@ -143,13 +143,13 @@ exports.updateOneEndorse = (req, res) => {
     });
   }
   const id = req.params.id;
-  Endorsement.findByIdAndUpdate(id, req.body)
-    .then(data => {
-      if (!data) {
+  Endorsement.findByIdAndUpdate(id, {$set: req.body})
+  .then((result) => {
+    if (!result) {
         res.status(404).send({
           message: 'Cannot find & update endorsement.'
         });
-      } else res.send({ message: "Endorsement was updated successfully." });
+      } else res.send({ data: result, message: "Endorsement was updated successfully." });
     })
     .catch(err => {
       res.status(500).send({

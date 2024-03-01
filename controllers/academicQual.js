@@ -68,8 +68,8 @@ exports.getAcademicFiles = (req, res) => {
 //GET all Academics  
 exports.getAllAcademic = (req, res) => {
     AcademicQual.find()
-      .then(data => { res.send(data); })
-      .catch(err => {
+    .then((result) => { return res.send({data: result}); })
+    .catch(err => {
         res.status(500).send({
           message:
             err.message || "Some error occurred while retrieving qualifications."
@@ -143,13 +143,13 @@ exports.updateOneAcademic = (req, res) => {
       });
     }
     const id = req.params.id;
-    AcademicQual.findByIdAndUpdate(id, req.body)
-      .then(data => {
-        if (!data) {
+    AcademicQual.findByIdAndUpdate(id, {$set: req.body})
+    .then((result) => {
+      if (!result) {
           res.status(404).send({
             message: 'Cannot find & update qualification.'
           });
-        } else res.send({ message: "Qualification was updated successfully." });
+        } else res.send({ data: result, message: "Qualification was updated successfully." });
       })
       .catch(err => {
         res.status(500).send({

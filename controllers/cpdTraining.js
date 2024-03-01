@@ -71,7 +71,7 @@ exports.getCPDFiles = (req, res) => {
 //GET all CPD
 exports.getAllCPD = (req, res) => {
   CPD.find()
-  .then(data => { return res.send(data); })
+  .then((result) => { return res.send({data: result}); })
   .catch(err => {
     return res.status(404).json({
       message:
@@ -146,13 +146,13 @@ exports.updateOneCPD = (req, res) => {
     });
   }
   const id = req.params.id;
-  CPD.findByIdAndUpdate(id, req.body)
-    .then(data => {
-      if (!data) {
+  CPD.findByIdAndUpdate(id, {$set: req.body})
+  .then((result) => {
+    if (!result) {
         res.status(404).send({
           message: 'Cannot find & update CPD.'
         });
-      } else res.send({ message: "CPD was updated successfully." });
+      } else res.send({ data: result, message: "CPD was updated successfully." });
     })
     .catch(err => {
       res.status(500).send({

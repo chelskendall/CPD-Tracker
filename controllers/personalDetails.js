@@ -31,17 +31,6 @@ exports.newPersonal = (req, res) => {
 };
 
 //GET all Personal
-/*exports.getAllPersonal = (req, res) => {
-  PersonalDetails.find()
-  .then(data => { return res.send(data); })
-  .catch(err => {
-    return res.status(404).json({
-      message:
-        err.message || "Some error occurred while retrieving details."
-      });
-    });
-};*/
-
 exports.getAllPersonal = (req, res) => {
   PersonalDetails.find()
   .then((result) => { return res.send({data: result}); })

@@ -69,8 +69,8 @@ exports.getServiceFiles = (req, res) => {
 //GET all Service
 exports.getAllService = (req, res) => {
     Services.find()
-  .then(data => { return res.send(data); })
-  .catch(err => {
+    .then((result) => { return res.send({data: result}); })
+    .catch(err => {
     return res.status(404).json({
       message:
         err.message || "Some error occurred while retrieving services."
@@ -144,13 +144,13 @@ exports.updateOneService = (req, res) => {
     });
   }
   const id = req.params.id;
-  Services.findByIdAndUpdate(id, req.body)
-    .then(data => {
-      if (!data) {
+  Services.findByIdAndUpdate(id, {$set: req.body})
+  .then((result) => {
+    if (!result) {
         res.status(404).send({
           message: 'Cannot find & update services.'
         });
-      } else res.send({ message: "Service was updated successfully." });
+      } else res.send({ data: result, message: "Service was updated successfully." });
     })
     .catch(err => {
       res.status(500).send({
