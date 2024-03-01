@@ -32,10 +32,9 @@ exports.newEmployment = (req, res) => {
   employment
     .save(employment)
     .then((result) => {
-      res.send({data: result});
-      res.json({ msg: 'New employment added successfully!'});
+      res.json({ data: result, msg: 'New employment added successfully!'});
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
         message:
           err.message || "Some error occurred while entering employment."
