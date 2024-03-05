@@ -29,7 +29,7 @@ const EmployHistorySchema = new Schema({
         required: [true]
     },
     files: {
-        type: String
+        type: Array
     },
     idEmploy: {
         type: String,

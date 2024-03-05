@@ -37,7 +37,7 @@ const CPDTrainingSchema = new Schema({
         required: [true]
     },
     files: {
-        type: String
+        type: Array
     },
     idCPD: {
         type: String,

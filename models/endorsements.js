@@ -25,7 +25,7 @@ const EndorsementsSchema = new Schema({
         required: [true]
     },
     files: {
-      type: String
+      type: Array
     },
     idEndorse: {
         type: String,

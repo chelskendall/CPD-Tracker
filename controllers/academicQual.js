@@ -4,43 +4,85 @@ const uuid = require("uuid");
 const path = require("path");
 const fs = require("fs");
 
-const uploadFile = require('../middleware/uploadFile');
 const baseUrl = "http://localhost:3000/academicfiles/";
-  
 
-//POST create Academic
-exports.newAcademic = (req, res) => {  
-    // Create an Academic
-    const academic = new AcademicQual({
-      user: req.params.email,
+
+//POST create Academic - old version
+/*exports.newAcademic = (req, res, next) => {
+  const url = 'http://localhost:3000/user/:email/newacademic'
+  const academic = new AcademicQual({
+    user: req.params.email,
       establishment: req.body.establishment,
       courseTitle: req.body.courseTitle,
       academicStart: req.body.academicStart,
       academicEnd: req.body.academicEnd,
-      //files: req.body.files,
+      files: url + '/uploads/' + req.file.filename,
       idAcademic: uuid.v4()
-    });
-    if (req.file){
-      let path = ''
-      req.files.forEach(function(files,index,arr){
-        path = path + files.path + ','
-      })
-      path = path.substring(0, path.lastIndexOf(","))
-      academic.files = path
-    }
-    // Save Academic in the database
-    academic
-      .save(academic)
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while entering Academic Qualifications."
-        });
+  });
+// Save Academic in the database
+ academic.save().then(result => {
+    console.log(result);
+    res.status(201).json({
+      message: "Academic entered successfully!",
+      academicCreated: {
+        establishment: result.establishment,
+        courseTitle: result.courseTitle,
+        academicStart: result.academicStart,
+        academicEnd: result.academicEnd,
+        files: result.files
+      }
+    })
+  }).catch(err => {
+    console.log(err),
+      res.status(500).json({
+        error: err
       });
-  };
+  })
+
+}*/
+
+//POST new Affiliation - https://www.positronx.io/angular-drag-and-drop-file-uploading-with-mongodb-multer/
+exports.newAcademic = (req, res) => {  
+  
+  const reqFiles = []
+  const url = 'http://localhost:3000/user/:email/newacademic'
+  
+  for (var i = 0; i < req.files.length; i++) {
+  reqFiles.push(url + '/uploads/' + req.files[i].filename)}
+
+  // Create an Affiliation
+  const academic = new AcademicQual({
+    user: req.params.email,
+    establishment: req.body.establishment,
+    courseTitle: req.body.courseTitle,
+    academicStart: req.body.academicStart,
+    academicEnd: req.body.academicEnd,
+    files: reqFiles,
+    idAffiliate: uuid.v4()
+  });
+  
+  //Save Academic in the database
+  academic
+    .save()
+    .then(result => {
+      console.log(result);
+    res.status(201).json({
+      message: "Done upload!",
+      academicCreated: {
+        establishment: result.establishment,
+        courseTitle: result.courseTitle,
+        academicStart: result.academicStart,
+        academicEnd: result.academicEnd,
+        files: result.files
+      }
+    })
+    }).catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while entering academics."
+      });
+    });
+};
 
 //GET all Files  
 exports.getAcademicFiles = (req, res) => {
@@ -66,11 +108,11 @@ exports.getAcademicFiles = (req, res) => {
 };
 
 //GET all Academics  
-exports.getAllAcademic = (req, res) => {
+exports.getAllAcademic = (req, res) => {no
     AcademicQual.find()
     .then((result) => { return res.send({data: result}); })
     .catch(err => {
-        res.status(500).send({
+      return res.status(404).json({
           message:
             err.message || "Some error occurred while retrieving qualifications."
         });
@@ -134,7 +176,7 @@ exports.deleteOneAcademic = (req, res) => {
         });
       });
   };
-
+ 
 //PUT update Academic/id  
 exports.updateOneAcademic = (req, res) => {
     if (!req.body) {

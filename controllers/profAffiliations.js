@@ -4,11 +4,10 @@ const uuid = require("uuid");
 const path = require("path");
 const fs = require("fs");
 
-const uploadFile = require('../middleware/uploadFile');
 const baseUrl = "http://localhost:3000/affiliationfiles/";
 
-//POST new Affiliation
-exports.newAffiliation = (req, res) => {  
+//POST new Affiliation - old version
+/*exports.newAffiliation = (req, res) => {  
   // Create an Affiliation
   const affiliations = new Affiliations({
     user: req.params.email,
@@ -36,6 +35,52 @@ exports.newAffiliation = (req, res) => {
       res.json({ msg: 'New affiliations added successfully!'});
     })
     .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while entering affiliations."
+      });
+    });
+};*/
+
+
+//POST new Affiliation - https://www.positronx.io/angular-drag-and-drop-file-uploading-with-mongodb-multer/
+exports.newAffiliation = (req, res) => {  
+  
+  const reqFiles = []
+  const url = 'http://localhost:3000/user/:email/newaffiliation'
+  
+  for (var i = 0; i < req.files.length; i++) {
+  reqFiles.push(url + '/uploads/' + req.files[i].filename)}
+
+  // Create an Affiliation
+  const affiliations = new Affiliations({
+    user: req.params.email,
+    typeAffiliation: req.body.typeAffiliation,
+    organization: req.body.organization,
+    affiliateTitle: req.body.affiliateTitle,
+    affiliateStart: req.body.affiliateStart,
+    affiliateEnd: req.body.affiliateEnd,
+    files: reqFiles,
+    idAffiliate: uuid.v4()
+  });
+  
+  //Save Affiliation in the database
+  affiliations
+    .save()
+    .then(result => {
+      console.log(result);
+    res.status(201).json({
+      message: "Done upload!",
+      affiliationCreated: {
+        typeAffiliation: result.typeAffiliation,
+        organization: result.organization,
+        affiliateTitle: result.affiliateTitle,
+        affiliateStart: result.affiliateStart,
+        affiliateEnd: result.affiliateEnd,
+        files: result.files
+      }
+    })
+    }).catch(err => {
       res.status(500).send({
         message:
           err.message || "Some error occurred while entering affiliations."

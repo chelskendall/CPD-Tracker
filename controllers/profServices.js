@@ -2,13 +2,12 @@
 const Services = require('../models/profServices');
 const uuid = require("uuid");
 const path = require("path");
-const fs = require("fs");
+const fs = require("fs"); 
 
-const uploadFile = require('../middleware/uploadFile');
 const baseUrl = "http://localhost:3000/servicefiles/";
 
-//POST new Service
-exports.newService = (req, res) => {  
+//POST new Service - old version
+/*exports.newService = (req, res) => {  
   // Create an Service
   const services = new Services({
     user: req.params.email,
@@ -39,6 +38,51 @@ exports.newService = (req, res) => {
       res.status(500).send({
         message:
           err.message || "Some error occurred while entering services."
+      });
+    });
+};*/
+
+//POST new Service - https://www.positronx.io/angular-drag-and-drop-file-uploading-with-mongodb-multer/
+exports.newService = (req, res) => {  
+  
+  const reqFiles = []
+  const url = 'http://localhost:3000/user/:email/newservice'
+  
+  for (var i = 0; i < req.files.length; i++) {
+  reqFiles.push(url + '/uploads/' + req.files[i].filename)}
+
+  // Create an Service
+  const services = new Services({
+    user: req.params.email,
+    typeServices: req.body.typeServices,
+    serviceTitle: req.body.serviceTitle,
+    serviceDescribe: req.body.serviceDescribe,
+    serviceDate: req.body.serviceDate,
+    serviceNotes: req.body.serviceNotes,
+    files: reqFiles,
+    idServices: uuid.v4()
+  });
+  
+  //Save Service in the database
+  services
+    .save()
+    .then(result => {
+      console.log(result);
+    res.status(201).json({
+      message: "Done upload!",
+      serviceCreated: {
+        typeServices: result.typeServices,
+        serviceTitle: result.serviceTitle,
+        serviceDescribe: result.serviceDescribe,
+        serviceDate: result.serviceDate,
+        serviceNotes: result.serviceNotes,
+        files: result.files
+      }
+    })
+    }).catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while entering affiliations."
       });
     });
 };

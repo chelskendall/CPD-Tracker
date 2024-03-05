@@ -1,3 +1,40 @@
+// Multer Mime Type Validation : https://www.positronx.io/angular-express-file-upload-with-reactive-forms-tutorial/
+
+/*let express = require('express'),
+  multer = require('multer'),
+  mongoose = require('mongoose');
+
+// Multer File upload settings
+const DIR = '../CPD-Tracker/uploads';
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, DIR);
+  },
+  filename: (req, file, cb) => {
+    const fileName = file.originalname.toLowerCase().split(' ').join('-');
+    cb(null, fileName)
+  }
+});
+
+// Multer Mime Type Validation
+//const uploadFile = (req, res, next) => multer({
+var uploadFile = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5
+  },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype == "image/png" || file.mimetype == "image/jpg" 
+    || file.mimetype == "image/jpeg" || file.mimetype == "application/pdf") {
+      cb(null, true);
+    } else {
+      cb(null, false);
+      return cb(new Error('Only .pdf .png, .jpg and .jpeg format allowed!'));
+    }
+  }
+});*/
+
+
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
@@ -8,11 +45,13 @@ const storage = multer.diskStorage({
     cb(null, '../CPD-Tracker/uploads'); //Uploads will be stored in the 'uploads' directory
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname); //Unique filename to avoid overwriting
+    const fileName = file.originalname.toLowerCase().split(' ').join('-');
+    cb(null, fileName)  //Unique filename to avoid overwriting
   }
 });
 
-const upload = multer({ storage: storage }); //Create multer upload instance
+//Create multer upload instance
+const upload = multer({ storage: storage }); 
 
 //Custom file upload middleware
 const uploadFile = (req, res, next) => {
@@ -52,3 +91,7 @@ const uploadFile = (req, res, next) => {
 };
 
 module.exports = uploadFile;
+
+
+
+

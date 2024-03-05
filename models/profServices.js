@@ -29,7 +29,7 @@ const ProfServicesSchema = new Schema({
         required: [true]
     },
     files: {
-        type: String
+        type: Array
     },
     idServices: {
         type: String,

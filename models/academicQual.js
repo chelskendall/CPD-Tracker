@@ -25,7 +25,7 @@ const AcademicQualSchema = new Schema({
         required: [true]
     },
     files: {
-        type: String
+        type: Array
     },
     idAcademic: {
         type: String,

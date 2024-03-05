@@ -51,6 +51,8 @@ app.use(express.json()); // allow application to use json data
 // use the cors middleware with the origin and credentials options
 app.use(cors({ origin: ["http://localhost:3000"], credentials: true }));
 
+// Make "uploads" Folder Publicly Available
+app.use("/uploads", express.static("uploads"));
 
 app.get('/', function (req,res) {
   res.sendFile(path + "index.html");
@@ -76,5 +78,10 @@ app.use('/', require('./routes/endorseAPI'));
 app.use((req,res,next) => {
     res.status(404).send("Sorry can't find that!")
 })
+
+// Find 404 and hand over to error handler
+app.use((req, res, next) => {
+  next(createError(404));
+});
 
 module.exports = app;
