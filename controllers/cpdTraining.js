@@ -6,9 +6,9 @@ const fs = require("fs");
 
 const uploadFile = require('../middleware/uploadFile');
 const baseUrl = "http://localhost:3000/cpdfiles/";
-
-//POST new CPD
-exports.newCPD = (req, res) => {  
+ 
+//POST new CPD - old version
+/*exports.newCPD = (req, res) => {  
   // Create an CPD
   const cpd = new CPD({
     user: req.params.email,
@@ -41,6 +41,55 @@ exports.newCPD = (req, res) => {
       res.status(500).send({
         message:
           err.message || "Some error occurred while entering CPD."
+      });
+    });
+};*/
+
+//POST new CPD - https://www.positronx.io/angular-drag-and-drop-file-uploading-with-mongodb-multer/
+exports.newCPD = (req, res) => {  
+  
+  const reqFiles = []
+  const url = 'http://localhost:3000/user/:email/newcpd'
+  
+  for (var i = 0; i < req.files.length; i++) {
+  reqFiles.push(url + '/uploads/' + req.files[i].filename)}
+
+  // Create an CPD
+  const cpds = new CPD({
+    user: req.params.email,
+    typeCPD: req.body.typeCPD,
+    cpdTitle: req.body.cpdTitle,
+    cpdDescribe: req.body.cpdDescribe,
+    cpdStart: req.body.cpdStart,
+    cpdEnd: req.body.cpdEnd,
+    cpdHours: req.body.cpdHours,
+    cpdReflect: req.body.cpdReflect,
+    files: reqFiles,
+    idAffiliate: uuid.v4()
+  });
+  
+  //Save CPD in the database
+  cpds
+    .save()
+    .then(result => {
+      console.log(result);
+    res.status(201).json({
+      message: "Done upload!",
+      cpdCreated: {
+        typeCPD: result.typeCPD,
+        cpdTitle: result.cpdTitle,
+        cpdDescribe: result.cpdDescribe,
+        cpdStart: result.cpdStart,
+        cpdEnd: result.cpdEnd,
+        cpdHours: result.cpdHours,
+        cpdReflect: result.cpdReflect,
+        files: result.files
+      }
+    })
+    }).catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while entering affiliations."
       });
     });
 };

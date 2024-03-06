@@ -7,8 +7,8 @@ const fs = require("fs");
 const uploadFile = require('../middleware/uploadFile');
 const baseUrl = "http://localhost:3000/endorsefiles/";
 
-//POST new Endorsement
-exports.newEndorse = (req, res) => {  
+//POST new Endorsement - old version
+/*exports.newEndorse = (req, res) => {  
   // Create an Endorsement
   const endorsement = new Endorsement({
     user: req.params.email,
@@ -38,6 +38,49 @@ exports.newEndorse = (req, res) => {
       res.status(500).send({
         message:
           err.message || "Some error occurred while entering endorsements."
+      });
+    });
+};*/
+
+//POST new Endorsement - https://www.positronx.io/angular-drag-and-drop-file-uploading-with-mongodb-multer/
+exports.newEndorse = (req, res) => {  
+  
+  const reqFiles = []
+  const url = 'http://localhost:3000/user/:email/newendorse'
+  
+  for (var i = 0; i < req.files.length; i++) {
+  reqFiles.push(url + '/uploads/' + req.files[i].filename)}
+
+  // Create an Endorsement
+  const endorsements = new Endorsement({
+    user: req.params.email,
+    refereeName: req.body.refereeName,
+    refereePlace: req.body.refereePlace,
+    refereePhone: req.body.refereePhone,
+    refereeDate: req.body.refereeDate,
+    files: reqFiles,
+    idAffiliate: uuid.v4()
+  });
+  
+  //Save Endorsement in the database
+  endorsements
+    .save()
+    .then(result => {
+      console.log(result);
+    res.status(201).json({
+      message: "Done upload!",
+      endorsementCreated: {
+        refereeName: result.refereeName,
+        refereePlace: result.refereePlace,
+        refereePhone: result.refereePhone,
+        refereeDate: result.refereeDate,
+        files: result.files
+      }
+    })
+    }).catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while entering affiliations."
       });
     });
 };

@@ -29,7 +29,7 @@ const CPDTrainingSchema = new Schema({
         required: [true]
     },
     cpdHours: {
-        type: Date,
+        type: Number,
         required: [true]
     },
     cpdReflect: {
