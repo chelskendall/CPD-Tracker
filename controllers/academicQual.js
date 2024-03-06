@@ -41,7 +41,8 @@ const baseUrl = "http://localhost:3000/academicfiles/";
 
 }*/
 
-//POST new Affiliation - https://www.positronx.io/angular-drag-and-drop-file-uploading-with-mongodb-multer/
+
+//POST new Academic - https://www.positronx.io/angular-drag-and-drop-file-uploading-with-mongodb-multer/
 exports.newAcademic = (req, res) => {  
   
   const reqFiles = []
@@ -50,8 +51,8 @@ exports.newAcademic = (req, res) => {
   for (var i = 0; i < req.files.length; i++) {
   reqFiles.push(url + '/uploads/' + req.files[i].filename)}
 
-  // Create an Affiliation
-  const academic = new AcademicQual({
+  // Create an Academic
+  const academics = new AcademicQual({
     user: req.params.email,
     establishment: req.body.establishment,
     courseTitle: req.body.courseTitle,
@@ -62,19 +63,12 @@ exports.newAcademic = (req, res) => {
   });
   
   //Save Academic in the database
-  academic
+  academics
     .save()
     .then(result => {
       console.log(result);
     res.status(201).json({
-      message: "Done upload!",
-      academicCreated: {
-        establishment: result.establishment,
-        courseTitle: result.courseTitle,
-        academicStart: result.academicStart,
-        academicEnd: result.academicEnd,
-        files: result.files
-      }
+      message: "Done upload!"
     })
     }).catch(err => {
       res.status(500).send({
@@ -108,7 +102,7 @@ exports.getAcademicFiles = (req, res) => {
 };
 
 //GET all Academics  
-exports.getAllAcademic = (req, res) => {no
+exports.getAllAcademic = (req, res) => {
     AcademicQual.find()
     .then((result) => { return res.send({data: result}); })
     .catch(err => {
