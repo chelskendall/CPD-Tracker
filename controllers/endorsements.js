@@ -59,7 +59,7 @@ exports.newEndorse = (req, res) => {
     refereePhone: req.body.refereePhone,
     refereeDate: req.body.refereeDate,
     files: reqFiles,
-    idAffiliate: uuid.v4()
+    idEndorse: uuid.v4()
   });
   
   //Save Endorsement in the database

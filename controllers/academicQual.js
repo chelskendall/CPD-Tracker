@@ -59,7 +59,7 @@ exports.newAcademic = (req, res) => {
     academicStart: req.body.academicStart,
     academicEnd: req.body.academicEnd,
     files: reqFiles,
-    idAffiliate: uuid.v4()
+    idAcademic: uuid.v4()
   });
   
   //Save Academic in the database

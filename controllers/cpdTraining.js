@@ -65,7 +65,7 @@ exports.newCPD = (req, res) => {
     cpdHours: req.body.cpdHours,
     cpdReflect: req.body.cpdReflect,
     files: reqFiles,
-    idAffiliate: uuid.v4()
+    idCPD: uuid.v4()
   });
   
   //Save CPD in the database
