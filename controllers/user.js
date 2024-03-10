@@ -1,7 +1,15 @@
-//import User model
-const User = require('../models/user');
+const AcademicQual = require('../models/academicQual');
+const CPD = require('../models/cpdTraining');
+const EmployHistory = require('../models/employHistory');
+const Endorsement = require('../models/endorsements');
+const PersonalDetails = require('../models/personalDetails');
+const Affiliations = require('../models/profAffiliations');
+const Services = require('../models/profServices');
+
+const User = require('../models/user'); //import User model
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+
 
 exports.register = function(req,res){
     User.find({email: req.body.email})
@@ -152,8 +160,79 @@ exports.allUsers = function(req,res){
     }
 };
 
-//Admin deletes user
+//Admin views all of users data
+exports.allOfAUser = function(req, res) {
+    User.find({ email: req.params.email })
+        .then(users => {
+            if (users.length === 0) {
+                return res.status(401).json({
+                    message: 'Invalid email'
+                });
+            }else{
+                res.status(200);
+        Promise.all([
+            AcademicQual.find({email: req.params.email}),
+            CPD.find({email: req.params.email}),
+            EmployHistory.find({email: req.params.email}),
+            Endorsement.find({email: req.params.email}),
+            PersonalDetails.find({email: req.params.email}),
+            Affiliations.find({email: req.params.email}),
+            Services.find({email: req.params.email}),
+        ]).then(function(results) {
+            const profiles = [    
+            { name: 'AcademicQual', data: results[0] },
+            { name: 'CPD', data: results[1] },
+            { name: 'EmployHistory', data: results[2] },
+            { name: 'Endorsement', data: results[3] },
+            { name: 'PersonalDetails', data: results[4] },
+            { name: 'Affiliations', data: results[5] },
+            { name: 'Services', data: results[6] },
+            ];
+            res.status(201).json({
+                profiles
+            });
+        }).catch(error => {console.log(error)});                        
+            }
+        });
+};
 
-//User views all data
+//Admin deletes user
+exports.deleteUser = function(req,res){
+    const deleteUserInfo = (user) => {
+        AcademicQual.deleteMany({email: req.body.email})
+        .then(() => user)
+        .catch((error) => console.log(error));
+        CPD.deleteMany({email: req.body.email})
+        .then(() => user)
+        .catch((error) => console.log(error));
+        EmployHistory.deleteMany({email: req.body.email})
+        .then(() => user)
+        .catch((error) => console.log(error));
+        Endorsement.deleteMany({email: req.body.email})
+        .then(() => user)
+        .catch((error) => console.log(error));
+        PersonalDetails.deleteMany({email: req.body.email})
+        .then(() => user)
+        .catch((error) => console.log(error));
+        Affiliations.deleteMany({email: req.body.email})
+        .then(() => user)
+        .catch((error) => console.log(error));
+        Services.deleteMany({email: req.body.email})
+        .then(() => user)
+        .catch((error) => console.log(error));
+    };
+    if (req.params.email === 'Administrator'){
+        res.status(200);
+        User.findOneAndRemove({email: req.body.email})
+        .then((user) => {res.send(deleteUserInfo(user));})
+        .catch((error) => console.log(error));
+    }
+    else {
+        res.status(401).json({
+            message: 'Administrator ONLY!'
+        }); 
+    }
+};
+
 
 //Mentor?
