@@ -223,7 +223,7 @@ exports.deleteUser = function(req,res){
     };
     if (req.params.email === 'Administrator'){
         res.status(200);
-        User.findOneAndRemove({email: req.body.email})
+        User.findOneAndDelete({email: req.body.email})
         .then((user) => {res.send(deleteUserInfo(user));})
         .catch((error) => console.log(error));
     }
