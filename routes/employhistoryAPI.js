@@ -2,13 +2,10 @@ const express = require('express'); //import express
 const router  = express.Router(); //Create an express router object to set up our routes
 
 const userAuth = require('../middleware/userAuth');
-const uploadFile = require('../middleware/uploadFile');
 const employController = require('../controllers/employHistory');   //Import our controller from our controller file we created earlier
 
  
 //Create routes with the controller function as the callback to handle the request.
-//router.post('/user/:email/newemploy', userAuth, uploadFile, employController.newEmployment); //new employment
-
 router.post('/user/:email/newemploy', userAuth, employController.newEmployment); //new employment
 router.get('/user/:email/allemploy', userAuth, employController.getAllEmploy); //display all employment
 router.get('/user/:email/employ/:id', userAuth, employController.getEmploy); //display one employment

@@ -3,7 +3,7 @@ const router = express.Router(); //Create an express router object to set up our
 let multer = require('multer'), mongoose = require('mongoose');
 
 const userAuth = require('../middleware/userAuth');
-const academicController = require('../controllers/academicQual');   //Import our academic qual controller from our controller file we created earlier
+const academicController = require('../controllers/academicQual'); //Import our academic qual controller from our controller file we created earlier
 
 // Multer File upload settings
 const DIR = '../CPD-Tracker/uploads';
@@ -20,11 +20,12 @@ const storage = multer.diskStorage({
 var upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
-    if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+    if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg" 
+    || file.mimetype === "application/pdf" || file.mimetype === "application/msword") {
       cb(null, true);
     } else {
       cb(null, false);
-      return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+      return cb(new Error('Only .pdf .docx .png .jpg .jpeg format allowed!'));
     }
   }
 });

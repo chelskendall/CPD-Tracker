@@ -1,51 +1,12 @@
 //import CPD Training model
 const CPD = require('../models/cpdTraining');
 const uuid = require("uuid");
-const path = require("path");
 const fs = require("fs");
 
-const uploadFile = require('../middleware/uploadFile');
 const baseUrl = "http://localhost:3000/cpdfiles/";
  
-//POST new CPD - old version
-/*exports.newCPD = (req, res) => {  
-  // Create an CPD
-  const cpd = new CPD({
-    user: req.params.email,
-    typeCPD: req.body.typeCPD,
-    cpdTitle: req.body.cpdTitle,
-    cpdDescribe: req.body.cpdDescribe,
-    cpdStart: req.body.cpdStart,
-    cpdEnd: req.body.cpdEnd,
-    cpdHours: req.body.cpdHours,
-    cpdReflect: req.body.cpdReflect,
-    //files: req.body.files,
-    idCPD: uuid.v4()
-  });
-  if (req.file){
-    let path = ''
-    req.files.forEach(function(files,index,arr){
-      path = path + files.path + ','
-    })
-    path = path.substring(0, path.lastIndexOf(","))
-    cpd.files = path
-  }
-  //Save CPD in the database
-  cpd
-    .save(cpd)
-    .then(data => {
-      res.send(data);
-      res.json({ msg: 'New CPD added successfully!'});
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while entering CPD."
-      });
-    });
-};*/
 
-//POST new CPD - https://www.positronx.io/angular-drag-and-drop-file-uploading-with-mongodb-multer/
+//POST new CPD 
 exports.newCPD = (req, res) => {  
   
   const reqFiles = []

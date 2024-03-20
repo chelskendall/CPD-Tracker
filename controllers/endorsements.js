@@ -1,48 +1,12 @@
 //import Endorsement model
 const Endorsement = require('../models/endorsements');
 const uuid = require("uuid");
-const path = require("path");
 const fs = require("fs");
 
-const uploadFile = require('../middleware/uploadFile');
 const baseUrl = "http://localhost:3000/endorsefiles/";
 
-//POST new Endorsement - old version
-/*exports.newEndorse = (req, res) => {  
-  // Create an Endorsement
-  const endorsement = new Endorsement({
-    user: req.params.email,
-    refereeName: req.body.refereeName,
-    refereePlace: req.body.refereePlace,
-    refereePhone: req.body.refereePhone,
-    refereeDate: req.body.refereeDate,
-    //files: req.body.files,
-    idEndorse: uuid.v4()
-  });
-  if (req.file){
-    let path = ''
-    req.files.forEach(function(files,index,arr){
-      path = path + files.path + ','
-    })
-    path = path.substring(0, path.lastIndexOf(","))
-    endorsement.files = path
-  }
-  //Save Endorsement in the database
-  endorsement
-    .save(endorsement)
-    .then(data => {
-      res.send(data);
-      res.json({ msg: 'New endorsement added successfully!'});
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while entering endorsements."
-      });
-    });
-};*/
 
-//POST new Endorsement - https://www.positronx.io/angular-drag-and-drop-file-uploading-with-mongodb-multer/
+//POST new Endorsement
 exports.newEndorse = (req, res) => {  
   
   const reqFiles = []

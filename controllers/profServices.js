@@ -1,48 +1,11 @@
 //import Prof Service model
 const Services = require('../models/profServices');
 const uuid = require("uuid");
-const path = require("path");
 const fs = require("fs"); 
 
 const baseUrl = "http://localhost:3000/servicefiles/";
 
-//POST new Service - old version
-/*exports.newService = (req, res) => {  
-  // Create an Service
-  const services = new Services({
-    user: req.params.email,
-    typeServices: req.body.typeServices,
-    serviceTitle: req.body.serviceTitle,
-    serviceDescribe: req.body.serviceDescribe,
-    serviceDate: req.body.serviceDate,
-    serviceNotes: req.body.serviceNotes,
-    //files: req.body.files,
-    idServices: uuid.v4()
-  });
-  if (req.file){
-    let path = ''
-    req.files.forEach(function(files,index,arr){
-      path = path + files.path + ','
-    })
-    path = path.substring(0, path.lastIndexOf(","))
-    services.files = path
-  }
-  //Save Service in the database
-  services
-    .save(services)
-    .then(data => {
-      res.send(data);
-      res.json({ msg: 'New services added successfully!'});
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while entering services."
-      });
-    });
-};*/
-
-//POST new Service - https://www.positronx.io/angular-drag-and-drop-file-uploading-with-mongodb-multer/
+//POST new Service
 exports.newService = (req, res) => {  
   
   const reqFiles = []

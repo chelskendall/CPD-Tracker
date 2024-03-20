@@ -1,10 +1,8 @@
 //import Employment model
 const EmployHistory = require('../models/employHistory');
 const uuid = require("uuid");
-const path = require("path");
 const fs = require("fs");
 
-const uploadFile = require('../middleware/uploadFile');
 const baseUrl = "http://localhost:3000/employmentfiles/";
 
 //POST new Employment
@@ -17,17 +15,8 @@ exports.newEmployment = (req, res) => {
     employStart: req.body.employStart,
     employEnd: req.body.employEnd,
     responsibilities: req.body.responsibilities,
-    //files: req.body.files,
     idEmploy: uuid.v4()
   });
-  /*if (req.file){
-    let path = ''
-    req.files.forEach(function(files,index,arr){
-      path = path + files.path + ','
-    })
-    path = path.substring(0, path.lastIndexOf(","))
-    employment.files = path
-  }*/
   //Save Employment in the database
   employment
     .save(employment)

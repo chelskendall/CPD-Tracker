@@ -37,9 +37,7 @@ exports.register = function(req,res){
                         expiresIn: "1h"
                     }
                     );
-                    (new User({'email': req.body.email , 'password': hash 
-                    /*'securityQuestion': req.body.securityQuestion, 
-                  'securityQuestionAnswer':req.body.securityQuestionAnswer*/}))
+                    (new User({'email': req.body.email , 'password': hash }))
                     .save().then(function(){
                         return res.status(200).json({
                             message: 'Registration Successful!',
@@ -140,9 +138,9 @@ exports.updatePW = function(req,res){
         })
 };
 
-//Admin views all users
+//Admin/Mentor views all users
 exports.allUsers = function(req,res){
-    if (req.params.email === 'Administrator'){
+    if (req.params.email === 'Administrator' || 'Mentor'){
         res.status(200);
         User.find({}, { email: 1, _id: 0 }).then(function(email){
             res.status(201).json({
@@ -155,12 +153,12 @@ exports.allUsers = function(req,res){
     }
     else {
         res.status(401).json({
-            message: 'Administrator access only.'
+            message: 'Administrator/Mentor access only.'
         }); 
     }
 };
 
-//Admin views all of users data
+//Admin/Mentor views all of users data
 exports.allOfAUser = function(req, res) {
     User.find({ email: req.params.email })
         .then(users => {
@@ -234,5 +232,3 @@ exports.deleteUser = function(req,res){
     }
 };
 
-
-//Mentor?

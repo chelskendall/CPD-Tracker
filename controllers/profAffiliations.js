@@ -1,49 +1,12 @@
 //import Prof Affiliations model
 const Affiliations = require('../models/profAffiliations');
 const uuid = require("uuid");
-const path = require("path");
 const fs = require("fs");
 
 const baseUrl = "http://localhost:3000/affiliationfiles/";
 
-//POST new Affiliation - old version
-/*exports.newAffiliation = (req, res) => {  
-  // Create an Affiliation
-  const affiliations = new Affiliations({
-    user: req.params.email,
-    typeAffiliation: req.body.typeAffiliation,
-    organization: req.body.organization,
-    affiliateTitle: req.body.affiliateTitle,
-    affiliateStart: req.body.affiliateStart,
-    affiliateEnd: req.body.affiliateEnd,
-    //files: req.body.files,
-    idAffiliate: uuid.v4()
-  });
-  if (req.file){
-    let path = ''
-    req.files.forEach(function(files,index,arr){
-      path = path + files.path + ','
-    })
-    path = path.substring(0, path.lastIndexOf(","))
-    affiliations.files = path
-  }
-  //Save Affiliation in the database
-  affiliations
-    .save(affiliations)
-    .then(data => {
-      res.send(data);
-      res.json({ msg: 'New affiliations added successfully!'});
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while entering affiliations."
-      });
-    });
-};*/
 
-
-//POST new Affiliation - https://www.positronx.io/angular-drag-and-drop-file-uploading-with-mongodb-multer/
+//POST new Affiliation
 exports.newAffiliation = (req, res) => {  
   
   const reqFiles = []
