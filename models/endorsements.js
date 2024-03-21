@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 //create Endorsements Schema
 const EndorsementsSchema = new Schema({
-    user: {
+    email: {
         type: String,
         required: [true],
         ref: "User"

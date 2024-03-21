@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 //create CPD Training Schema
 const CPDTrainingSchema = new Schema({
-    user: {
+    email: {
         type: String,
         required: [true],
         ref: "User"

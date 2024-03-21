@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 //create Academic Qualifications Schema
 const AcademicQualSchema = new Schema({
-    user: {
+    email: {
         type: String,
         required: [true],
         ref: "User"

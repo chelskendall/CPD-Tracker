@@ -17,7 +17,7 @@ exports.newCPD = (req, res) => {
 
   // Create an CPD
   const cpds = new CPD({
-    user: req.params.email,
+    email: req.params.email,
     typeCPD: req.body.typeCPD,
     cpdTitle: req.body.cpdTitle,
     cpdDescribe: req.body.cpdDescribe,

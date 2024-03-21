@@ -17,7 +17,7 @@ exports.newAcademic = (req, res) => {
 
   // Create an Academic
   const academics = new AcademicQual({
-    user: req.params.email,
+    email: req.params.email,
     establishment: req.body.establishment,
     courseTitle: req.body.courseTitle,
     academicStart: req.body.academicStart,

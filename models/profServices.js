@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 //create Professional Services Schema
 const ProfServicesSchema = new Schema({
-    user: {
+    email: {
         type: String,
         required: [true],
         ref: "User"

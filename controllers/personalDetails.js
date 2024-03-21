@@ -6,7 +6,7 @@ const uuid = require("uuid");
 exports.newPersonal = (req, res) => {
     // Create a Personal
     const personal = new PersonalDetails({
-      user: req.params.email,
+      email: req.params.email,
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       phone: req.body.phone,

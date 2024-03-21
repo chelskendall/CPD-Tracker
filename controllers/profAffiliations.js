@@ -17,7 +17,7 @@ exports.newAffiliation = (req, res) => {
 
   // Create an Affiliation
   const affiliations = new Affiliations({
-    user: req.params.email,
+    email: req.params.email,
     typeAffiliation: req.body.typeAffiliation,
     organization: req.body.organization,
     affiliateTitle: req.body.affiliateTitle,

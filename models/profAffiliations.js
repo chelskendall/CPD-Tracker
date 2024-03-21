@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 //create Professional Affiliations Schema
 const ProfAffiliationsSchema = new Schema({
-    user: {
+    email: {
         type: String,
         required: [true],
         ref: "User"

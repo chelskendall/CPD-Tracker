@@ -9,7 +9,7 @@ const baseUrl = "http://localhost:3000/employmentfiles/";
 exports.newEmployment = (req, res) => {  
   // Create an Employment
   const employment = new EmployHistory({
-    user: req.params.email,
+    email: req.params.email,
     jobTitle: req.body.jobTitle,
     employer: req.body.employer,
     employStart: req.body.employStart,

@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 //create Chatroom Schema
 const ChatroomSchema = new Schema({
-    user: {
+    email: {
         type: String,
         required: [true],
         ref: "User"

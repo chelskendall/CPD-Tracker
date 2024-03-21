@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 //create Personal Details Schema
 const PersonalDetailsSchema = new Schema({
-    user: {
+    email: {
         type: String,
         required: [true],
         ref: "User"

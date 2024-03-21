@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 //create Employment History Schema
 const EmployHistorySchema = new Schema({
-    user: {
+    email: {
         type: String,
         required: [true],
         ref: "User"

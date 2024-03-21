@@ -17,7 +17,7 @@ exports.newEndorse = (req, res) => {
 
   // Create an Endorsement
   const endorsements = new Endorsement({
-    user: req.params.email,
+    email: req.params.email,
     refereeName: req.body.refereeName,
     refereePlace: req.body.refereePlace,
     refereePhone: req.body.refereePhone,

@@ -19,14 +19,7 @@ const UserSchema = new Schema({
         required: [false],
         minlength: 3
     }
-    /*securityQuestion: {
-        type: String,
-        required: [true, 'Security question is required.']
-    },
-    securityQuestionAnswer: {
-        type: String,
-        required: [true, 'Security question answer is required.']
-    }*/
+
 }
 );
 

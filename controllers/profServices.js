@@ -16,7 +16,7 @@ exports.newService = (req, res) => {
 
   // Create an Service
   const services = new Services({
-    user: req.params.email,
+    email: req.params.email,
     typeServices: req.body.typeServices,
     serviceTitle: req.body.serviceTitle,
     serviceDescribe: req.body.serviceDescribe,
