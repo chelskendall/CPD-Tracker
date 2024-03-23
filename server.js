@@ -41,6 +41,7 @@ io.on('connection', (socket) => {
 
 const port = process.env.PORT || "3000";
 
+//Listens for requests
 server.listen(port,()=>{
-    console.log("Server running");
+    console.log("Server running! Listening for requests.");
 });

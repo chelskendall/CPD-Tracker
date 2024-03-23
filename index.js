@@ -3,11 +3,6 @@ const mongoose = require('mongoose');
 const cors = require("cors");
 const bodyParser = require("body-parser");
 
-/*const path = require ('path');
-const expressHandlebars = require('express-handlebars').engine;
-const { downloadOrder, findAll, findOne, viewOrder } = require('./controllers/cvTemplate');
-const AcademicQual = require('./models/academicQual');*/
-
 //Setting up express application which listens for request
 const app = express();
 
@@ -33,6 +28,7 @@ app.use((req, res, next) => {
   next();
 });
 
+//Connection to database
 const { MongoClient } = require("mongodb");
 const uri = "mongodb+srv://chelsk:tebendiga@cpddata.ktoj6gu.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri);
@@ -60,9 +56,6 @@ app.get('/', function (req,res) {
 
 // Connect Database & Backend
 connectMongoDB();
-/*const listener = app.listen(process.env.PORT || 3000, () => {
-    console.log('App is listening on port ' + listener.address().port)
-})*/
 
 //Initialize Routes
 app.use('/', require('./routes/userAPI'));
