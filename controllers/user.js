@@ -87,7 +87,7 @@ exports.login = function(request, response){
           // catch error if password do not match
           .catch((error) => {
             response.status(400).send({
-              message: "Passwords do not match.",
+              message: "Password incorrect.",
               error,
             });
           });
@@ -138,7 +138,7 @@ exports.updatePW = function(req,res){
         })
 };
 
-//Admin/Mentor views all users
+// Admin/Mentor views all users
 exports.allUsers = function(req,res){
     if (req.params.email === 'Administrator' || 'Mentor'){
         res.status(200);
@@ -158,7 +158,7 @@ exports.allUsers = function(req,res){
     }
 };
 
-//Admin/Mentor views all of users data
+// Admin/Mentor views all of users data
 exports.allOfAUser = function(req, res) {
     User.find({ email: req.params.email })
         .then(users => {
@@ -169,22 +169,22 @@ exports.allOfAUser = function(req, res) {
             }else{
                 res.status(200);
         Promise.all([
-            AcademicQual.find({email: req.params.email}),
-            CPD.find({email: req.params.email}),
-            EmployHistory.find({email: req.params.email}),
-            Endorsement.find({email: req.params.email}),
             PersonalDetails.find({email: req.params.email}),
+            EmployHistory.find({email: req.params.email}),
+            AcademicQual.find({email: req.params.email}),
             Affiliations.find({email: req.params.email}),
             Services.find({email: req.params.email}),
+            CPD.find({email: req.params.email}),
+            Endorsement.find({email: req.params.email}),
         ]).then(function(results) {
-            const profiles = [    
-            { name: 'AcademicQual', data: results[0] },
-            { name: 'CPD', data: results[1] },
-            { name: 'EmployHistory', data: results[2] },
-            { name: 'Endorsement', data: results[3] },
-            { name: 'PersonalDetails', data: results[4] },
-            { name: 'Affiliations', data: results[5] },
-            { name: 'Services', data: results[6] },
+            const profiles = [
+            { name: 'PersonalDetails', data: results[0] },
+            { name: 'EmployHistory', data: results[1] },
+            { name: 'AcademicQual', data: results[2] },
+            { name: 'Affiliations', data: results[3] },
+            { name: 'Services', data: results[4] },
+            { name: 'CPD', data: results[5] },
+            { name: 'Endorsement', data: results[6] },
             ];
             res.status(201).json({
                 profiles
@@ -194,7 +194,7 @@ exports.allOfAUser = function(req, res) {
         });
 };
 
-//Admin deletes user
+// Admin deletes user
 exports.deleteUser = function(req,res){
     const deleteUserInfo = (user) => {
         AcademicQual.deleteMany({email: req.body.email})

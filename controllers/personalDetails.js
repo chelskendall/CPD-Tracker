@@ -20,7 +20,6 @@ exports.newPersonal = (req, res) => {
       .save(personal)
       .then(data => {
         res.send(data);
-        //res.json({ msg: 'New endorsement added successfully!'});
       })
       .catch(err => {
         res.status(500).send({

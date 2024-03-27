@@ -31,29 +31,6 @@ exports.newEmployment = (req, res) => {
     });
 };
 
-//GET all Files  
-exports.getEmployFiles = (req, res) => {
-  const directoryPath = "../CPD-Tracker/uploads";
-  fs.readdir(directoryPath, function (err, files) {
-    if (err) {
-      return res.status(500).send({
-        message: "Unable to scan files!",
-      });
-    }
-    else{
-    let fileList = [];
-
-    files.forEach((file) => {
-      fileList.push({
-        name: file,
-        url: baseUrl + file,
-      });
-    });
-    return res.status(200).send(fileList);
-    };
-  });
-};
-
 //GET all Employment
 exports.getAllEmploy = (req, res) => {
   EmployHistory.find()
@@ -82,24 +59,6 @@ exports.getEmploy = (req, res) => {
         .status(500)
         .send({ message: "Error retrieving employ with id=" + id });
     });
-};
-
-//DELETE File/id
-exports.deleteEmployFile = (req, res) => {
-  const fileName = req.params.files;
-  const directoryPath = "../CPD-Tracker/uploads/";
-
-  try {
-    fs.unlinkSync(directoryPath + fileName);
-
-    res.status(200).send({
-      message: "File is deleted.",
-    });
-  } catch (err) {
-    res.status(500).send({
-      message: "Could not delete the file. " + err,
-    });
-  }
 };
 
 //DELETE Employment/id
